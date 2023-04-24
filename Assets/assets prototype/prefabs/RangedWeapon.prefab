@@ -50,7 +50,7 @@ MonoBehaviour:
   shotEffect: {fileID: 0}
   shotPoint: {fileID: 6321113755659507222}
   camAnim: {fileID: 0}
-  startTimeBtwShots: 0.4
+  startTimeBtwShots: 0.2
 --- !u!1 &6321113755659507223
 GameObject:
   m_ObjectHideFlags: 0

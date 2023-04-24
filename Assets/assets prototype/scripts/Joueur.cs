@@ -38,13 +38,13 @@ public class Joueur : MonoBehaviour
         if (Input.GetButtonDown("Switch"))
         {
             if (currentweapon == "melee"){
-                Destroy(gameObject.transform.GetChild(1).gameObject);
+                Destroy(gameObject.transform.GetChild(0).gameObject);
                 var weapon = Instantiate(rangedWeapon, transform.position, transform.rotation);
                 weapon.transform.parent = gameObject.transform;
                 currentweapon = "ranged";
             }
             else{
-                Destroy(gameObject.transform.GetChild(1).gameObject);
+                Destroy(gameObject.transform.GetChild(0).gameObject);
                 var weapon = Instantiate(meleeWeapon, transform.position, transform.rotation);
                 weapon.transform.parent = gameObject.transform;
                 currentweapon = "melee";

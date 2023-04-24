@@ -41,3 +41,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: ground
+    uniqueID: 4227958293
+    locked: 0
+  - name: decoration
+    uniqueID: 2968142847
+    locked: 0
+  - name: characters
+    uniqueID: 1501895059
+    locked: 0
+  - name: wall
+    uniqueID: 698542999
+    locked: 0
+  - name: sky
+    uniqueID: 774770025
+    locked: 0

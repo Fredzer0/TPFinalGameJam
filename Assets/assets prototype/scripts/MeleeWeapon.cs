@@ -7,7 +7,7 @@ public class MeleeWeapon : MonoBehaviour
     [SerializeField] float offset;
     [SerializeField] float attackRange = 0.5f;
     [SerializeField] int attackDamage = 1;
-    [SerializeField] Transform attackPoint;
+    [SerializeField] Transform attackPoint1, attackPoint2, attackPoint3;
     [SerializeField] GameObject attackSpriteTest;
 
     private float timeBtwShots;
@@ -26,6 +26,7 @@ public class MeleeWeapon : MonoBehaviour
             if (Input.GetMouseButton(0))
             {
                 Attack();
+                timeBtwShots = startTimeBtwShots;
             }
         }
         else {
@@ -37,9 +38,11 @@ public class MeleeWeapon : MonoBehaviour
 
     void Attack()
     {
-        Instantiate(attackSpriteTest, attackPoint.position, Quaternion.identity);
+        Instantiate(attackSpriteTest, attackPoint1.position, Quaternion.identity);
+        Instantiate(attackSpriteTest, attackPoint2.position, Quaternion.identity);
+        Instantiate(attackSpriteTest, attackPoint3.position, Quaternion.identity);
 
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint3.position, attackRange, enemyLayers);
 
         foreach (Collider2D enemy in hitEnemies){
             enemy.GetComponent<Lama>().TakeDamage(attackDamage);
