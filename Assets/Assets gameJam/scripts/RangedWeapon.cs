@@ -35,6 +35,6 @@ public class RangedWeapon : MonoBehaviour
             timeBtwShots -= Time.deltaTime;
         }
 
-       
+
     }
 }
