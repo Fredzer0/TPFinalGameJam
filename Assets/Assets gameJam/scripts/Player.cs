@@ -15,7 +15,13 @@ public class Player : MonoBehaviour
 
     [SerializeField] private int maxHP = 3;
     public int currHP;
+    private float timeBtwAttacks;
+    [SerializeField] float startTimeBtwAttacks;
 
+    [SerializeField] private float iFrames;
+    private float currIFrames;
+
+    Weapon weaponScript;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +31,7 @@ public class Player : MonoBehaviour
         col = GetComponent<Collider2D>();
         anim = GetComponent<Animator>();
         currHP = maxHP;
-
+        weaponScript = GetComponentInChildren<Weapon>();
     }
 
 
@@ -35,11 +41,18 @@ public class Player : MonoBehaviour
     {
         mouvementFleche.x = Input.GetAxisRaw("Horizontal");
         mouvementFleche.y = Input.GetAxisRaw("Vertical");
-
-        if (Input.GetMouseButton(0))
+        weaponScript = GetComponentInChildren<Weapon>();
+        startTimeBtwAttacks = weaponScript.attackInterval;
+        if (timeBtwAttacks <= 0)
         {
-            Attack();
-            
+            if (Input.GetMouseButton(0))
+            {
+                anim.SetTrigger("Sword");
+                timeBtwAttacks = startTimeBtwAttacks;
+            }
+        }
+        else {
+            timeBtwAttacks -= Time.deltaTime;
         }
 
     }
@@ -48,6 +61,8 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         float vel = rig.velocity.magnitude;
+        Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        
 
         if (vel >= 0.01)
         {
@@ -59,29 +74,38 @@ public class Player : MonoBehaviour
         }
 
         rig.AddForce(mouvementFleche.normalized * vitesse * rig.drag * rig.mass);
-        anim.SetInteger("AnimState", 1);
-        anim.SetTrigger("Grounded");
+        anim.SetBool("Moving", true);
+        anim.SetFloat("Horizontal", lastDirection.x);
+        anim.SetFloat("Vertical", lastDirection.y);
+        anim.SetFloat("AimHorizontal", difference.x);
+        anim.SetFloat("AimVertical", difference.y);
+
+        currIFrames -= Time.deltaTime; //tick down les iframes
+
         if (vel <= 0.03){
-            anim.SetInteger("AnimState", 0);
-            anim.ResetTrigger("Grounded");
+            anim.SetBool("Moving", false);
         }
     }
 
     void Attack(){
-
-        anim.SetTrigger("Attack1");
-
         
+        weaponScript.WeaponAttack();
+    }
+
+    void PickupWeapon(){
+        startTimeBtwAttacks = weaponScript.attackInterval;
 
     }
 
-
-
     void TakeDamage(int damage){
 
-        currHP -= damage;
+        if (currIFrames <= 0 ){
+            currHP -= damage;
+            anim.SetTrigger("Damaged");
+            currIFrames = iFrames; 
+        }
 
-        //anim
+  
         if (currHP <= 0){
             Death();
         }
