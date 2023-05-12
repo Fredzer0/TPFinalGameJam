@@ -118,8 +118,8 @@ public class Player : MonoBehaviour
     }
 
 
-    private void OnCollisionStay2D(Collision2D collision){
-        if (Input.GetKeyDown(KeyCode.E)){
+    void OnTriggerStay2D(Collider2D collision){
+        if (Input.GetKey(KeyCode.E)){
             if (LayerMask.LayerToName(collision.gameObject.layer) == "Weapon"){
 
                 if (weaponScript != null){
