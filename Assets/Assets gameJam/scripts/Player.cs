@@ -42,18 +42,23 @@ public class Player : MonoBehaviour
         mouvementFleche.x = Input.GetAxisRaw("Horizontal");
         mouvementFleche.y = Input.GetAxisRaw("Vertical");
         weaponScript = GetComponentInChildren<Weapon>();
-        startTimeBtwAttacks = weaponScript.attackInterval;
-        if (timeBtwAttacks <= 0)
-        {
-            if (Input.GetMouseButton(0))
+
+        if (weaponScript != null){
+            startTimeBtwAttacks = weaponScript.attackInterval;
+    
+            if (timeBtwAttacks <= 0)
             {
-                anim.SetTrigger("Sword");
-                timeBtwAttacks = startTimeBtwAttacks;
+                if (Input.GetMouseButton(0))
+                {
+                    anim.SetTrigger("Sword");
+                    timeBtwAttacks = startTimeBtwAttacks;
+                }
             }
-        }
-        else {
-            timeBtwAttacks -= Time.deltaTime;
-        }
+            else {
+                timeBtwAttacks -= Time.deltaTime;
+            }
+
+       }
 
     }
 
@@ -62,7 +67,6 @@ public class Player : MonoBehaviour
     {
         float vel = rig.velocity.magnitude;
         Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-        
 
         if (vel >= 0.01)
         {
@@ -92,11 +96,6 @@ public class Player : MonoBehaviour
         weaponScript.WeaponAttack();
     }
 
-    void PickupWeapon(){
-        startTimeBtwAttacks = weaponScript.attackInterval;
-
-    }
-
     void TakeDamage(int damage){
 
         if (currIFrames <= 0 ){
@@ -117,6 +116,31 @@ public class Player : MonoBehaviour
         rig.bodyType = RigidbodyType2D.Static;
         anim.SetTrigger("Death");
     }
+
+
+    private void OnCollisionStay2D(Collision2D collision){
+        if (Input.GetKeyDown(KeyCode.E)){
+            if (LayerMask.LayerToName(collision.gameObject.layer) == "Weapon"){
+
+                if (weaponScript != null){
+                    Destroy(gameObject.transform.GetChild(0).gameObject);
+                }
+           
+
+                collision.gameObject.transform.SetParent(transform);
+                Transform weaponTransform = collision.gameObject.transform;
+                weaponTransform.position = transform.position;
+                weaponScript = collision.gameObject.GetComponent<Weapon>();
+                weaponScript.enabled = true;
+                SpriteRenderer spriteWeapon = collision.gameObject.GetComponent<SpriteRenderer>();
+                spriteWeapon.enabled = false;
+                Collider2D colliderWeapon = collision.gameObject.GetComponent<Collider2D>();
+                colliderWeapon.enabled = false;
+            }
+
+        }
+    }
+
 
 
 }
