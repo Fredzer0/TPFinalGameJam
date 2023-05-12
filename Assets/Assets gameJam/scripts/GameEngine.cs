@@ -13,7 +13,9 @@ public class GameEngine : MonoBehaviour
         player = GameObject.Find("Player").GetComponent<Player>();
     }
 
-    // Update is called once per frame
+    void update(){
+        UpdateHP();
+    }
     public void UpdateHP(){
 
         statsManager.hp = player.currHP;

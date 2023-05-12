@@ -29,11 +29,11 @@ public class WeaponAttackSprite : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D collision){
-        if (melee == false){
-            Delete();
+        if (melee == false){   
             if (LayerMask.LayerToName(collision.gameObject.layer) == "Enemy"){
                 //emmeteur? data de qui est toucher + damage de l'arme? 
             }
+            Delete();
         }
  
     }
